@@ -21,8 +21,16 @@ class SessionsScreen extends StatefulWidget {
 class _SessionsScreenState extends State<SessionsScreen> {
   bool _isSessionExited = false;
   bool _isCompletionDialogShown = false;
-  final GlobalKey<RefreshIndicatorState> _refreshKey =
-      GlobalKey<RefreshIndicatorState>();
+  bool isTask = false;
+  final GlobalKey<RefreshIndicatorState> _refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<SessionProvider>(context, listen: false).fetchSessions();
+    });
+  }
 
   void _checkTaskCompletion(BuildContext context, SessionProvider provider) {
     if (provider.sessionProgress >= 1.0 &&
@@ -140,9 +148,10 @@ class _SessionsScreenState extends State<SessionsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppStrings.tasksTitle,
+                        AppStrings.sessionsTitle,
                         style: theme.textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.primary
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -385,12 +394,10 @@ class _SessionsScreenState extends State<SessionsScreen> {
                   backgroundColor: Colors.redAccent.withValues(alpha: 0.1),
                   foregroundColor: Colors.redAccent,
                   onPressed: () async {
-                    final shouldEnd = await _showEndConfirmation(context);
+                    final shouldEnd = await _showEndConfirmation(context, provider);
                     if (shouldEnd == true) {
                       _isSessionExited = false;
                       provider.endSession(true);
-                      // Navigator.pop(context);
-                      // Navigator.pushReplacementNamed(context, '/home');
                     }
                   },
                   child: const Icon(Icons.stop_rounded),
@@ -437,6 +444,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
 
   Widget _buildSummaryState(BuildContext context, SessionProvider provider) {
     final theme = Theme.of(context);
+    int? taskID;
 
     return Center(
       key: const ValueKey('summary'),
@@ -475,13 +483,18 @@ class _SessionsScreenState extends State<SessionsScreen> {
             AppButton(
               text: (_isSessionExited) ? "Okay" : "Done",
               onPressed: () {
-                provider.reset();
                 // Refresh tasks to update progress bars
+                taskID = provider.currentTaskId;
+                provider.reset();
                 Provider.of<TaskProvider>(context, listen: false).fetchTasks();
-                Provider.of<NavigationProvider>(
-                  context,
-                  listen: false,
-                ).setIndex(4);
+                Provider.of<SessionProvider>(context, listen: false).fetchSessions();
+                if (taskID != null) {
+                  Navigator.pop(context);
+                } else {
+                  Provider.of<NavigationProvider>(context,listen: false).setIndex(4);
+                }
+
+
               },
             ),
           ],
@@ -536,14 +549,16 @@ class _SessionsScreenState extends State<SessionsScreen> {
     );
   }
 
-  Future<bool?> _showEndConfirmation(BuildContext context) {
+  Future<bool?> _showEndConfirmation(BuildContext context, SessionProvider provider) {
     return showDialog<bool>(
       context: context,
       builder:
           (context) => AlertDialog(
             title: const Text("Stop Session?"),
-            content: const Text(
-              "Are you ready to complete your focus period and save the stats for this task?",
+            content: Text(
+              (provider.currentTaskId != null)
+                  ? "Are you ready to complete your focus period and save the stats for this task?"
+                  : "Are you ready to complete your focus period?",
             ),
             actions: [
               TextButton(
@@ -551,11 +566,7 @@ class _SessionsScreenState extends State<SessionsScreen> {
                 child: const Text("Continue"),
               ),
               ElevatedButton(
-                onPressed:
-                    () => Provider.of<NavigationProvider>(
-                      context,
-                      listen: false,
-                    ).setIndex(2),
+                onPressed: () => Navigator.pop(context, true),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.redAccent,
                   foregroundColor: Colors.white,
@@ -593,10 +604,7 @@ class _SessionCard extends StatelessWidget {
   }
 
   Future<void> _viewSession(BuildContext context) async {
-    final task =
-        Provider.of<TaskProvider>(
-          context,
-        ).tasks.where((t) => t.id == provider.currentTaskId).firstOrNull;
+    final task = Provider.of<TaskProvider>(context,listen: false).tasks.where((t) => t.id == session.taskId).firstOrNull;
     String details =
         "Subject: ${task?.subject ?? "None"}\nStart: ${session.startTime}\nEnd: ${session.endTime}\nDuration: ${session.duration}\nInterruptions: ${session.interruptions}";
     final confirmed = await showDialog<bool>(
@@ -644,7 +652,7 @@ class _SessionCard extends StatelessWidget {
 
     return Dismissible(
       key: Key(session.id.toString()),
-      direction: DismissDirection.endToStart,
+      direction: DismissDirection.none,
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
@@ -687,7 +695,7 @@ class _SessionCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                session.duration.toString(),
+                                provider.formatTime(session.duration),
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   decoration: null,

@@ -54,7 +54,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     children: [
                       Text(
                         AppStrings.tasksTitle,
-                        style: theme.textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
+                        style: theme.textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -269,7 +269,7 @@ class _TaskCard extends StatelessWidget {
                             _buildInfoChip(
                               context, 
                               Icons.timer_outlined, 
-                              "${task.estimatedTime / 60}m"
+                              Provider.of<TaskProvider>(context, listen: false).formatTime(task.estimatedTime)
                             ),
                           ],
                         ),

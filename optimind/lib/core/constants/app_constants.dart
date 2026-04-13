@@ -1,7 +1,7 @@
 class AppConstants {
   // API URLs
-  // static const String baseUrl = 'https://suchet.pythonanywhere.com/api'; // WSGI
-  static const String baseUrl = 'http://192.168.1.6:5000/api'; // Dev
+  static const String baseUrl = 'https://suchet.pythonanywhere.com/api'; // WSGI
+  // static const String baseUrl = 'http://192.168.1.6:5000/api'; // Dev
   
   // Storage Keys
   static const String tokenKey = 'jwt_token';

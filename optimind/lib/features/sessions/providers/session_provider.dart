@@ -17,6 +17,7 @@ class SessionProvider extends ChangeNotifier {
   List<SessionModel> _sessions = [];
   SessionState _state = SessionState.idle;
   int _elapsedSeconds = 0;
+  int _startFrom = 0;
   int _interruptionCount = 0;
   bool _isLoading = false;
   DateTime? _startTime;
@@ -41,12 +42,12 @@ class SessionProvider extends ChangeNotifier {
     sorted.sort((a, b) {
       // Start time (Most cases handled here itself)
       if (a.startTime != b.startTime) {
-        return (a.startTime.isAfter(b.startTime)) ? 1 : -1;
+        return (a.startTime.isAfter(b.startTime)) ? -1 : 1;
       }
 
       // If ever in life it doesn't end there
       if (a.duration != b.duration){
-        return (a.duration > b.duration) ? 1 : -1;
+        return (a.duration > b.duration) ? -1 : 1;
       }
       // No sane session shall come till here, yet EDGE CASE
       return (a.interruptions < b.interruptions) ? 1 : -1;
@@ -87,6 +88,7 @@ class SessionProvider extends ChangeNotifier {
   void startSession({int? taskId, int? targetDuration, int? startFrom}) {
     _state = SessionState.active;
     _startTime = DateTime.now();
+    _startFrom = startFrom ?? 0;
     _elapsedSeconds = startFrom ?? 0;
     _interruptionCount = 0;
     _currentTaskId = taskId;
@@ -127,7 +129,7 @@ class SessionProvider extends ChangeNotifier {
 
     _timer?.cancel();
     final endTime = DateTime.now();
-    final durationSeconds = _elapsedSeconds;
+    final durationSeconds = _elapsedSeconds - _startFrom;
 
     // Prepare payload
     final payload = {
@@ -173,6 +175,17 @@ class SessionProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  String formatTime(int seconds) {
+    int h = seconds ~/ 3600;
+    int m = (seconds % 3600) ~/ 60;
+    int s = seconds % 60;
+
+    if (h > 0) {
+      return "${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}";
+    }
+    return "${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}";
   }
 
   @override

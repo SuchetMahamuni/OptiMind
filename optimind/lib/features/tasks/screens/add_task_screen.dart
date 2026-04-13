@@ -98,7 +98,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text("Create New Task"),
+        title: Text("Create New Task",
+            style: TextStyle(color: theme.colorScheme.primary),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
