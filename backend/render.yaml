@@ -1,0 +1,18 @@
+# Render deployment configuration
+# See https://render.com/docs/yaml-spec for full reference
+
+services:
+  - type: web
+    name: optimind-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn "app:create_app()"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: DATABASE_URL
+        value: sqlite:///optimind.db   # swap to a managed Postgres URL in prod
