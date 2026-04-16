@@ -594,19 +594,18 @@ class _SessionCard extends StatelessWidget {
 
   Color _getInterruptionColor(int duration, int interruptions) {
     double distractionRate = duration / interruptions;
-    if (distractionRate <= 3) {
-      return Colors.greenAccent;
-    } else if (distractionRate > 3 && distractionRate <= 6) {
+    if (distractionRate <= 600) {
+      return Colors.amber.shade900;
+    } else if (distractionRate > 900 && distractionRate <= 1200) {
       return Colors.amber.shade300;
     } else {
-      return Colors.amber.shade900;
+      return Colors.greenAccent;
     }
   }
 
   Future<void> _viewSession(BuildContext context) async {
     final task = Provider.of<TaskProvider>(context,listen: false).tasks.where((t) => t.id == session.taskId).firstOrNull;
-    String details =
-        "Subject: ${task?.subject ?? "None"}\nStart: ${session.startTime}\nEnd: ${session.endTime}\nDuration: ${session.duration}\nInterruptions: ${session.interruptions}";
+    String details = "Subject: ${task?.subject ?? "None"}\nStart: ${session.startTime}\nEnd: ${session.endTime}\nDuration: ${provider.formatTime(session.duration)}\nInterruptions: ${session.interruptions}";
     final confirmed = await showDialog<bool>(
       context: context,
       builder:

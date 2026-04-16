@@ -187,6 +187,35 @@ class _TaskCard extends StatelessWidget {
       );
     }
   }
+  
+  Future<void> _deleteTask(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete Task"),
+        content: Text("Are you sure you want to delete task '${task.subject}'?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("NO"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightGreen,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text("YES"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      Provider.of<TaskProvider>(context, listen: false).deleteTask(task.id);
+    }
+    //   Provider.of<TaskProvider>(context, listen: false).deleteTask(task.id)
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +224,7 @@ class _TaskCard extends StatelessWidget {
 
     return Dismissible(
       key: Key(task.id.toString()),
-      direction: DismissDirection.endToStart,
+      direction: DismissDirection.none,
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
@@ -205,11 +234,12 @@ class _TaskCard extends StatelessWidget {
         ),
         child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
-      onDismissed: (_) => Provider.of<TaskProvider>(context, listen: false).deleteTask(task.id),
+      // onDismissed: (_) => _deleteTask(context),
       child: AppCard(
         padding: EdgeInsets.zero,
         child: InkWell(
           onTap: task.isCompleted ? null : () => _startSessionForTask(context),
+          onLongPress: () => _deleteTask(context),
           borderRadius: BorderRadius.circular(24),
           child: IntrinsicHeight(
             child: Row(

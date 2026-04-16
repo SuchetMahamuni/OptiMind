@@ -8,6 +8,7 @@ import 'features/settings/providers/settings_provider.dart';
 import 'features/sessions/providers/session_provider.dart';
 import 'providers/navigation_provider.dart';
 import 'features/tasks/providers/task_provider.dart';
+import 'features/insights/providers/insights_provider.dart';
 import 'features/auth/screens/splash_screen.dart';
 import 'features/auth/screens/login_screen.dart';
 import 'features/auth/screens/register_screen.dart';
@@ -28,6 +29,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
         ChangeNotifierProvider(create: (_) => SessionProvider()),
         ChangeNotifierProvider(create: (_) => TaskProvider()),
+        ChangeNotifierProvider(create: (_) => InsightsProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider())
       ],
       child: const OptiMindApp(),
