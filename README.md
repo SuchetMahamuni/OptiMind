@@ -1,8 +1,8 @@
 # 🚀 OptiMind – Study Productivity Booster
 
-**OptiMind** is a behavior-driven study productivity application designed to help students stay consistent, avoid burnout, and improve focus through intelligent tracking and guidance.
+**OptiMind** is a behavior-driven study productivity application designed to help students stay consistent, avoid burnout, and improve focus through intelligent tracking, feedback, and insights.
 
-Unlike traditional to-do or timer apps, OptiMind focuses on maintaining an **optimal productivity balance** using structured workflows, smart nudges, and performance insights.
+Unlike traditional to-do or timer apps, OptiMind focuses on maintaining an **optimal productivity balance** using structured workflows, smart nudges, and performance analytics.
 
 ---
 
@@ -25,25 +25,25 @@ OptiMind solves this by keeping users in their:
 
 * Create, update, and delete study tasks
 * Set priorities, deadlines, and estimated time
-* Track progress through session integration
+* Track real-time progress through session integration
 
 ---
 
 ### ⏱️ Study Sessions
 
 * Start, pause, resume, and stop sessions
-* Track interruptions
-* Task-linked sessions with progress tracking
-* Visual progress indicators
+* Track interruptions during sessions
+* Task-linked sessions for structured progress
+* Visual progress indicators (time-based completion)
 
 ---
 
 ### 📊 Dashboard
 
-* Focus Score (0–100)
-* Daily study goal (adaptive or custom)
+* Focus Score (0–100) based on performance
+* Daily study goal (adaptive or user-defined)
 * Smart nudges based on behavior
-* Study summaries and consistency tracking
+* Real-time study summaries
 
 ---
 
@@ -55,11 +55,25 @@ OptiMind solves this by keeping users in their:
 
 ---
 
-### 📈 Session History
+### 📜 Session History
 
 * View all completed sessions
 * Track duration and interruptions
-* Analyze study patterns
+* Analyze study consistency
+
+---
+
+### 📈 Insights (Key Differentiator 🔥)
+
+OptiMind provides meaningful analytics to help users understand and improve their study behavior:
+
+* 🔥 **Streak Tracking** – Maintain consistency over time
+* 📊 **Study Time Analysis** – Daily, weekly, and monthly trends
+* 🎯 **Focus Score Trends** – Track improvement in focus quality
+* ⚠️ **Interruptions Analysis** – Understand distractions
+* 📋 **Task Contribution** – Time spent progressing on tasks
+
+> These insights transform raw data into actionable understanding.
 
 ---
 
@@ -187,7 +201,7 @@ flutter run
 ## 🔮 Future Scope
 
 * Machine Learning-based recommendations
-* Advanced analytics & insights
+* Advanced behavioral analytics
 * Calendar & event integration
 * Voice-based interaction
 * Smart habit tracking
@@ -196,7 +210,7 @@ flutter run
 
 ## 👨‍💻 Author
 
-Developed by Suchet Mahamuni
+Developed by **Suchet Mahamuni**
 
 ---
 
