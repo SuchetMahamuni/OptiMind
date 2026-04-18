@@ -1,7 +1,7 @@
 class AppConstants {
   // API URLs
   // static const String baseUrl = 'https://suchet.pythonanywhere.com/api'; // WSGI
-  static const String baseUrl = 'https://optimind-79cf.onrender.com/api'; // Dev
+  static const String baseUrl = 'https://optimind-2m9q.onrender.com/api'; // Dev
   
   // Storage Keys
   static const String tokenKey = 'jwt_token';
