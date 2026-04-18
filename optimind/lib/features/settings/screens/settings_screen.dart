@@ -121,7 +121,7 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: 48),
           Center(
             child: Text(
-              'OptiMind v1.0.0',
+              'OptiMind v1.0.1',
               style: theme.textTheme.bodySmall,
             ),
           ),
