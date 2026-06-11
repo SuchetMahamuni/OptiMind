@@ -34,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final updateData = await authProvider.checkUpdate();
 
+    await Future.delayed(const Duration(seconds: 1));
 
     if (updateData['update_available']){
         await showDialog(
@@ -52,10 +53,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         );
     }
-
-    print("Shown dialog box");
-
-    await Future.delayed(const Duration(seconds: 2));
 
     if (authProvider.isAuthenticated) {
       Navigator.pushReplacementNamed(context, '/home');
