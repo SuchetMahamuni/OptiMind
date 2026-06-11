@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import 'update_dialog.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkAuth() async {
     // Artificial delay for splash feel
-    await Future.delayed(const Duration(seconds: 2));
+
     
     if (!mounted) return;
 
@@ -30,6 +31,31 @@ class _SplashScreenState extends State<SplashScreen> {
     await authProvider.init();
 
     if (!mounted) return;
+
+    final updateData = await authProvider.checkUpdate();
+
+
+    if (updateData['update_available']){
+        await showDialog(
+          context: context,
+          barrierDismissible: !updateData['data']['mandatory'],
+          builder: (_) => UpdateDialog(
+            updateData: updateData['data'],
+            onUpdate: () async {
+              await authProvider.installUpdate(
+                updateData['data']['apk_url'],
+              );
+            },
+            onLater: () {
+              Navigator.pop(context);
+            },
+          ),
+        );
+    }
+
+    print("Shown dialog box");
+
+    await Future.delayed(const Duration(seconds: 2));
 
     if (authProvider.isAuthenticated) {
       Navigator.pushReplacementNamed(context, '/home');
@@ -55,10 +81,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: Colors.white.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.psychology,
-                size: 80,
-                color: Colors.white,
+              child: Image.asset(
+                'assets/logo/optimind-logo-no-bg.png',
+                width: 200,
+                height: 200,
               ),
             ),
             const SizedBox(height: 24),

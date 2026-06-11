@@ -24,3 +24,4 @@ ios/.symlinks/
 *.log
 .DS_Store
 walkthrough.md
+context.md

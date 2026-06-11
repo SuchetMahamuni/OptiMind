@@ -61,4 +61,9 @@ class AuthService {
     final token = await _storageService.getToken();
     return token != null;
   }
+
+  Future<Map> checkUpdate() async {
+    final response = await _apiService.get('auth/check_update');
+    return json.decode(response.body);
+  }
 }

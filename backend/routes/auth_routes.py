@@ -9,7 +9,7 @@ GET  /api/auth/me        — return the profile of the logged-in user
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import json
 from app import db
 from models.user import User
 
@@ -80,3 +80,10 @@ def me():
     user_id = int(get_jwt_identity())
     user = User.query.get_or_404(user_id)
     return jsonify({"user": user.to_dict()}), 200
+
+
+@auth_bp.route("/check_update", methods=["GET"])
+def check_update():
+    with open('version_update.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    return jsonify(data), 200
