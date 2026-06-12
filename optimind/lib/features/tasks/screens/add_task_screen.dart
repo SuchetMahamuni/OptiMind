@@ -200,6 +200,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
+  Color _getPriorityColor(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'high': return const Color(0xBFD95037);
+      case 'medium': return const Color(0xBFFFB300);
+      case 'low': return const Color(0xBF43A047);
+      default: return Colors.grey;
+    }
+  }
+
   Widget _buildPrioritySelector(BuildContext context) {
     final theme = Theme.of(context);
     return DropdownButtonFormField<String>(
@@ -209,7 +218,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         labelStyle: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.primary),
         prefixIcon: Icon(Icons.flag_outlined, color: theme.colorScheme.primary),
         filled: true,
-        fillColor: theme.colorScheme.surface,
+        fillColor: _getPriorityColor(_priority),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
       ),
       items: const [

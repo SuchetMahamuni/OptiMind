@@ -1,11 +1,11 @@
 {
   "latest_version": "1.1.0",
-  "release_title": "Stability & Deployment Update",
+  "release_title": "Branding & Productivity Update",
   "mandatory": false,
   "apk_url": "https://github.com/SuchetMahamuni/OptiMind/releases/download/v1.1.0/app-release.apk",
-  "release_notes": ["Added app logo.",
-                    "Changes made to app label.",
-                    "Added OTA updates manager avoiding the need of manual updating.",
-                    "Added 'Edit Task' feature."
-                  ]
+  "release_notes": ["Feature: Added OTA updates",
+                    "Feature: Added task editing",
+                    "Update: Added OptiMind logo + Android label",
+                    "Update: Improved priority indicators"
+                   ]
 }

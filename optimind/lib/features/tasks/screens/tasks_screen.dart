@@ -142,9 +142,9 @@ class _TaskCard extends StatelessWidget {
 
   Color _getPriorityColor(String priority) {
     switch (priority.toLowerCase()) {
-      case 'high': return Colors.deepOrange;
-      case 'medium': return Colors.amber.shade700;
-      case 'low': return Colors.lightBlue;
+      case 'high': return const Color(0xFFD95037);
+      case 'medium': return const Color(0xFFFFB300);
+      case 'low': return const Color(0xFF43A047);
       default: return Colors.grey;
     }
   }
