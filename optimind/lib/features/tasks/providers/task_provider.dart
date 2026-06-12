@@ -96,6 +96,10 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> updateTask(int taskId, Map<String, dynamic> taskData) async {
+    await _apiService.put('tasks/$taskId', taskData);
+  }
+
   Future<bool> deleteTask(int taskId) async {
     try {
       final response = await _apiService.delete('tasks/$taskId');

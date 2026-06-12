@@ -9,6 +9,7 @@ import '../providers/task_provider.dart';
 import '../models/task_model.dart';
 import '../widgets/task_progress_bar.dart';
 import 'add_task_screen.dart';
+import 'edit_task_screen.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -239,7 +240,44 @@ class _TaskCard extends StatelessWidget {
         padding: EdgeInsets.zero,
         child: InkWell(
           onTap: task.isCompleted ? null : () => _startSessionForTask(context),
-          onLongPress: () => _deleteTask(context),
+          // onLongPress: () => _deleteTask(context),
+          onLongPress: () {
+            showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return SafeArea(
+                        child: Wrap(
+                            children: [
+
+                                ListTile(
+                                    leading: Icon(Icons.edit),
+                                    title: Text('Edit Task'),
+                                    onTap: () {
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => EditTaskScreen(task: task,),
+                                            ),
+                                        );
+                                    },
+                                ),
+
+                                ListTile(
+                                    leading: Icon(Icons.delete),
+                                    title: Text('Delete Task'),
+                                    onTap: () {
+                                        Navigator.pop(context);
+                                        _deleteTask(context);
+                                    },
+                                ),
+                            ],
+                        ),
+                    );
+                  },
+            );
+          },
+
           borderRadius: BorderRadius.circular(24),
           child: IntrinsicHeight(
             child: Row(
